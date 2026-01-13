@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Order, OrderType } from '../models/order.model';
-import { Bot } from '../models/bot.model';
+import { Order, OrderStatus, OrderType } from '../models/order.model';
+import { Bot,BotStatus } from '../models/bot.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderControllerService {
@@ -41,7 +41,7 @@ export class OrderControllerService {
     const order: Order = {
       orderNo: this.orderCounter++,
       type,
-      status: 'PENDING',
+      status: OrderStatus.PENDING,
     };
     this.totalOrders$.next(this.orderCounter - 1);
 
@@ -61,9 +61,9 @@ export class OrderControllerService {
     } else {
       // No idle bot → push to pending
       const pending = [...this.pendingOrders$.value];
-      if (type === 'VIP') {
-        const vip = pending.filter((o) => o.type === 'VIP');
-        const normal = pending.filter((o) => o.type === 'NORMAL');
+      if (type === OrderType.VIP) {
+        const vip = pending.filter((o) => o.type === OrderType.VIP);
+        const normal = pending.filter((o) => o.type === OrderType.NORMAL);
         this.pendingOrders$.next([...vip, order, ...normal]);
       } else {
         this.pendingOrders$.next([...pending, order]);
@@ -75,7 +75,7 @@ export class OrderControllerService {
   addBot() {
     const bot: Bot = {
       id: this.botCounter++,
-      status: 'IDLE',
+      status: BotStatus.IDLE,
       busy: false,
     };
     this.bots$.next([...this.bots$.value, bot]);
@@ -93,9 +93,9 @@ export class OrderControllerService {
     if (!bot) return;
 
     // If the bot is processing an order, revert only if PROCESSING
-    if (bot.busy && bot.currentOrder && bot.currentOrder.status === 'PROCESSING') {
+    if (bot.busy && bot.currentOrder && bot.currentOrder.status === OrderStatus.PROCESSING) {
       clearTimeout(bot.timer);
-      bot.currentOrder.status = 'PENDING';
+      bot.currentOrder.status = OrderStatus.PENDING;
       this.pendingOrders$.next([bot.currentOrder, ...this.pendingOrders$.value]);
       this.orderCreated$.next(bot.currentOrder); // let another bot pick it
     }
@@ -117,20 +117,20 @@ export class OrderControllerService {
 
     // Assign order
     idleBot.busy = true;
-    idleBot.status = 'BUSY';
+    idleBot.status = BotStatus.BUSY;
     idleBot.currentOrder = order;
-    order.status = 'PROCESSING';
+    order.status = OrderStatus.PROCESSING;
     // <-- add this line to immediately update counts
     this.updateBotCounts();
 
     // Process order
     idleBot.timer = setTimeout(() => {
-      order.status = 'COMPLETE';
+      order.status = OrderStatus.COMPLETE;
       this.completedOrders$.next([...this.completedOrders$.value, order]);
 
       // Bot becomes idle
       idleBot.busy = false;
-      idleBot.status = 'IDLE';
+      idleBot.status = BotStatus.IDLE;
       idleBot.currentOrder = undefined;
 
       this.updateBotCounts(); // update busy/idle count

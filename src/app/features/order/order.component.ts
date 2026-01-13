@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderControllerService } from '../../core/services/order-controller.service';
 import { combineLatest, map } from 'rxjs';
+import { OrderType } from '../../core/models/order.model';
 
 @Component({
   selector: 'app-order',
@@ -22,10 +23,10 @@ export class OrderComponent {
   idleBots$ = this.ctrl.idleBots$;
 
   normal() {
-    this.ctrl.createOrder('NORMAL');
+    this.ctrl.createOrder(OrderType.NORMAL);
   }
   vip() {
-    this.ctrl.createOrder('VIP');
+    this.ctrl.createOrder(OrderType.VIP);
   }
   addBot() {
     this.ctrl.addBot();

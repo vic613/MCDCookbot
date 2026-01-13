@@ -1,6 +1,16 @@
 
-export type OrderType = 'VIP' | 'NORMAL';
-export type OrderStatus = 'PENDING' | 'PROCESSING' | 'COMPLETE';
+// export type OrderType = 'VIP' | 'NORMAL';
+
+export enum OrderType {
+  VIP = 'VIP',
+  NORMAL = 'NORMAL'
+}
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETE = 'COMPLETE'
+}
 
 export interface Order {
   orderNo: number;

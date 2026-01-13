@@ -1,7 +1,10 @@
 
 import { Order } from './order.model';
 
-export type BotStatus = 'IDLE' | 'BUSY';
+export enum BotStatus {
+  IDLE = 'IDLE',
+  BUSY = 'BUSY'
+}
 
 export interface Bot {
   id: number;
