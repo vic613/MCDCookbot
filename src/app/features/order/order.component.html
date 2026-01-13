@@ -1,0 +1,66 @@
+<div class="controls">
+  <button mat-raised-button color="primary" (click)="normal()">New Normal Order</button>
+  <button mat-raised-button color="primary" (click)="vip()">New VIP Order</button>
+  <button (click)="addBot()">+ Bot</button>
+  <button (click)="removeBot()">- Bot</button>
+</div>
+
+<!-- BOT SUMMARY -->
+<div class="bot-summary">
+  <div class="bot-card">
+    📝 Total Orders: <strong>{{ totalOrders$ | async }}</strong>
+  </div>
+
+  <div class="bot-card">
+    🤖 Total Bots: <strong>{{ (totalBots$ | async)?.length }}</strong>
+  </div>
+
+  <div class="bot-card">
+    🔥 Busy: <strong>{{ busyBots$ | async }}</strong>
+  </div>
+
+  <div class="bot-card">
+    💤 Idle: <strong>{{ idleBots$ | async }}</strong>
+  </div>
+</div>
+
+@if (false) {
+  <div class="card">
+    <h3>🤖 Cooking Bots</h3>
+
+    @for (bot of (bots$ | async); track bot.id) {
+      <div class="bot-row">
+        <strong>Bot #{{ bot.id }}</strong>
+
+        @if (bot.busy) {
+          <span>
+            ⚙️ Processing Order #{{ bot.currentOrder?.orderNo }}
+            ({{ bot.currentOrder?.type }})
+          </span>
+        } @else {
+          <span>
+            💤 Idle
+          </span>
+        }
+      </div>
+    }
+  </div>
+}
+
+<div class="board">
+  <!-- PENDING CARD -->
+  <div class="card">
+    <h3>Pending Orders</h3>
+    <div class="order pending" *ngFor="let o of pending$ | async">
+      #{{ o.orderNo }} - {{ o.type }}
+    </div>
+  </div>
+
+  <!-- COMPLETED CARD -->
+  <div class="card">
+    <h3>Completed Orders</h3>
+    <div class="order completed" *ngFor="let o of completed$ | async">
+      #{{ o.orderNo }} - {{ o.type }}
+    </div>
+  </div>
+</div>
