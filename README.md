@@ -90,7 +90,7 @@ Normal Orders
 FIFO processing
 
 📂 Project Folder Structure
-MCDCookbot/
+'''MCDCookbot/
 src/
 ├── app/
 │   ├── core/                          # Core application logic (singleton layer)
