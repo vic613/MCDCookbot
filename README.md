@@ -20,6 +20,7 @@ GitHub Pages deployable
 
 🧱 System Architecture
 High-Level Architecture Diagram
+```text
 ┌────────────────────┐
 │   UI Components    │
 │────────────────────│
@@ -90,7 +91,8 @@ Normal Orders
 FIFO processing
 
 📂 Project Folder Structure
-'''MCDCookbot/
+```text
+MCDCookbot/
 src/
 ├── app/
 │   ├── core/                          # Core application logic (singleton layer)
