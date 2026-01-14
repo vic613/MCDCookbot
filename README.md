@@ -67,6 +67,7 @@ Single Source of Truth (Service Layer)
 All business logic is centralized inside OrderControllerService, while UI components remain stateless and reactive.
 
 🔁 Order Processing Flow
+```text  
 Order Created
      ↓
 Added to Pending Queue
@@ -78,7 +79,7 @@ YES ───────────────► Assign to Bot
                     PROCESSING (10s)
                           ↓
                      COMPLETED
-
+```
 Priority Rules
 
 VIP Orders
