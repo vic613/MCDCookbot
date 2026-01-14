@@ -2,6 +2,9 @@
 
 MCDCookbot is an Angular-based simulation of McDonald’s automated cooking bot system, designed to demonstrate event-driven order processing, VIP prioritization, and dynamic bot scaling during high-demand scenarios such as the COVID-19 period.
 
+Demo Page :
+https://vic613.github.io/MCDCookbot/
+
 🚀 Features
 
 VIP & Normal order prioritization
