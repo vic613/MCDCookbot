@@ -54,6 +54,7 @@ High-Level Architecture Diagram
 │ • Auto-complete handling         │
 │ • Reassignment on availability   │
 └──────────────────────────────────┘
+```
 
 Architectural Pattern
 
@@ -116,7 +117,7 @@ src/
 │   └── app.spec.ts                    # Root unit test
 │
 └── index.html                         # Application entry HTML
-
+``` 
 
 📁 Folder Explanation
 /components
