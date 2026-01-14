@@ -1,59 +1,228 @@
-# MCDCookbot
+🍔 MCDCookbot
+
+MCDCookbot is an Angular-based simulation of McDonald’s automated cooking bot system, designed to demonstrate event-driven order processing, VIP prioritization, and dynamic bot scaling during high-demand scenarios such as the COVID-19 period.
+
+🚀 Features
+
+VIP & Normal order prioritization
+
+Concurrent cooking bot processing
+
+Dynamic add/remove bots
+
+Real-time order & bot status updates
+
+Event-driven, reactive architecture
+
+No backend required (frontend-only prototype)
+
+GitHub Pages deployable
+
+🧱 System Architecture
+High-Level Architecture Diagram
+┌────────────────────┐
+│   UI Components    │
+│────────────────────│
+│ • Order Board      │
+│ • Bot Dashboard    │
+│ • Control Buttons  │
+└─────────┬──────────┘
+          │ User Actions
+          ▼
+┌──────────────────────────┐
+│ OrderControllerService   │
+│──────────────────────────│
+│ • Order Queue Management │
+│ • VIP Priority Logic     │
+│ • Bot Assignment Engine  │
+│ • Lifecycle Control      │
+└─────────┬──────────┬─────┘
+          │          │
+          │          │ RxJS Streams
+          ▼          ▼
+┌────────────────┐  ┌────────────────┐
+│ Order Streams  │  │ Bot Streams    │
+│ (BehaviorSubj) │  │ (BehaviorSubj) │
+└───────┬────────┘  └───────┬────────┘
+        │                   │
+        ▼                   ▼
+┌──────────────────────────────────┐
+│     Bot Timers (10s per order)    │
+│──────────────────────────────────│
+│ • Concurrent execution           │
+│ • Auto-complete handling         │
+│ • Reassignment on availability   │
+└──────────────────────────────────┘
+
+Architectural Pattern
+
+Event-Driven Architecture
+
+Reactive Programming (RxJS)
+
+Single Source of Truth (Service Layer)
+
+All business logic is centralized inside OrderControllerService, while UI components remain stateless and reactive.
+
+🔁 Order Processing Flow
+Order Created
+     ↓
+Added to Pending Queue
+     ↓
+Idle Bot Available?
+     ↓
+YES ───────────────► Assign to Bot
+                          ↓
+                    PROCESSING (10s)
+                          ↓
+                     COMPLETED
+
+Priority Rules
+
+VIP Orders
+
+Always placed before Normal orders
+
+FIFO among VIPs
+
+Normal Orders
+
+FIFO processing
+
+📂 Project Folder Structure
+MCDCookbot/
+src/
+├── app/
+│   ├── core/                          # Core application logic (singleton layer)
+│   │   ├── models/                    # Domain models & enums
+│   │   │   ├── order.model.ts
+│   │   │   ├── bot.model.ts
+│   │   │   └── enums.ts               # OrderType, OrderStatus
+│   │   └── services/                  # Business logic & controllers
+│   │       └── order-controller.service.ts
+│   │
+│   ├── features/
+│   │   └── order/                     # Order feature (UI + logic)
+│   │       ├── order.component.ts
+│   │       └── order.component.html
+│   │
+│   ├── app.config.ts                  # Application configuration (providers)
+│   ├── app.routes.ts                  # Application routes
+│   ├── app.ts                         # Root standalone component
+│   ├── app.html                       # Root template
+│   ├── app.css                        # Root styles
+│   └── app.spec.ts                    # Root unit test
+│
+└── index.html                         # Application entry HTML
+
+
+📁 Folder Explanation
+/components
+
+UI-only components:
+
+Display orders
+
+Show bot status
+
+Provide user controls
+⚠️ No business logic here
+
+/services
+
+OrderControllerService (Core Logic):
+
+Order queue management
+
+VIP prioritization
+
+Bot lifecycle handling
+
+Timer-based processing
+
+Event broadcasting (RxJS)
+
+/models
+
+Strongly-typed domain models:
+
+Order
+
+Bot
+
+Enums for status & type
+
+/dist/MCDCookbot/browser
+
+Angular production output (Angular 16+ behavior):
+
+browser/ → actual deployable files
+
+index.html → SPA entry point
+
+404.html → GitHub Pages route fallback
+
+🌐 Routing & Deployment
+Base HREF
+<base href="/MCDCookbot/">
+
+
+Required for GitHub Pages and sub-folder hosting.
+
+404 Fallback (SPA Support)
+<!-- 404.html -->
+<script>
+  sessionStorage.redirect = location.pathname;
+  location.replace('/MCDCookbot/');
+</script>
+
+
+Ensures refresh & deep links work correctly.
+
+🧪 Local Testing
+Development Mode
+ng serve
+
+
+Access:
+
+http://localhost:4200
+
+Production Simulation (Recommended)
+ng build --configuration production --base-href=/MCDCookbot/
+npx serve dist/MCDCookbot
+
+
+Access:
+
+http://localhost:3000
+
+⚠️ Known Limitations
+
+No backend persistence
+
+Page refresh resets state
+
+Single restaurant simulation
+
+Timers reset on reload
+
+🔮 Future Enhancements
+
+Backend API integration
+
+Persistent storage (IndexedDB / DB)
+
+WebSocket real-time updates
+
+Multi-branch support
+
+Performance analytics dashboard
+
+🏁 Conclusion
+
+MCDCookbot showcases a scalable, event-driven kitchen automation model using Angular and RxJS. The architecture cleanly separates concerns, supports concurrency, and is fully deployable as a modern SPA.
+
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
 
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
